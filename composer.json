@@ -1,0 +1,28 @@
+{
+  "name": "bhry98/laravel-api-response",
+  "description": "laravel package for handle responses for api projects",
+  "type": "library",
+  "require": {
+    "laravel/framework": "12.*"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Bhry98\\LaravelApiResponse\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Bhr Abdelrahman",
+      "email": "bhrabdelrahman8@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Bhry98\\LaravelApiResponse\\Providers\\BResponseServiceProvider"
+      ]
+    },
+    "minimum-stability": "stable"
+  }
+}
