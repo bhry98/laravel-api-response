@@ -7,11 +7,11 @@ return [
     'allow_trace' => env('API_RESPONSE_ALLOW_TRACE', false),
     // response keys/names
     'keys' => [
-        ResponseKeys::Status->value => 'status',
-        ResponseKeys::Message->value => 'message',
-        ResponseKeys::Data->value => 'data',
-        ResponseKeys::Meta->value => 'meta',
-        ResponseKeys::Errors->value => 'errors',
+        'status' => 'status',
+        'message' => 'message',
+        'data' => 'data',
+        'meta' => 'meta',
+        'errors' => 'errors',
     ],
     // default messages
     'messages' => [

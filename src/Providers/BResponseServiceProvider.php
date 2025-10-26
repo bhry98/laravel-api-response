@@ -21,9 +21,9 @@ class BResponseServiceProvider extends ServiceProvider
         // Bind each response as a concrete class (not singletons so make() returns fresh instances)
         $this->app->bind('bResponse.success', fn() => new SuccessResponse());
         $this->app->bind('bResponse.error', fn() => new ErrorResponse());
-        $this->app->bind('bResponse.validation', fn() => new ValidationErrorResponse());
+        $this->app->bind('bResponse.validationError', fn() => new ValidationErrorResponse());
         $this->app->bind('bResponse.notFound', fn() => new NotFoundResponse());
-        $this->app->bind('bResponse.internal', fn() => new InternalErrorResponse());
+        $this->app->bind('bResponse.internalError', fn() => new InternalErrorResponse());
     }
 
     public function boot(): void
