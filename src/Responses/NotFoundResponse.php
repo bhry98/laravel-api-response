@@ -6,10 +6,9 @@ use Bhry98\LaravelApiResponse\Helpers\BaseResponse;
 
 class NotFoundResponse extends BaseResponse
 {
-    protected int $statusCode = 404;
-
     public function __construct()
     {
         $this->message = config('bhry98-api-response.messages.not_found', 'Resource not found');
+        $this->statusCode = 404;
     }
 }

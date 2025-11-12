@@ -8,10 +8,10 @@ use Illuminate\Support\ViewErrorBag;
 
 class ValidationErrorResponse extends BaseResponse
 {
-    protected int $statusCode = 422;
     public function __construct()
     {
         $this->message = config('bhry98-api-response.messages.validation', 'Validation failed');
+        $this->statusCode = 422;
     }
 
 
