@@ -156,13 +156,13 @@ abstract class BaseResponse
 
         return response()->json([
             'status' => $this->statusCode,
-            'message' => $this->message
-                ?? ($configMessage['default'] ?? ucfirst($this->statusCode)),
+            'message' => $this->message ?? ($configMessage['default'] ?? ucfirst($this->statusCode)),
             'data' => $this->data ?? [],
             'additions' => $this->additions ?? [],
             'meta' => $this->meta ?? [],
-        ]);
-//        return response()->json($this->toArray(), $this->statusCode, [], $options);
+        ],
+            $this->statusCode
+        );
     }
 
     /** alias for toJson() to keep your suggested naming */
