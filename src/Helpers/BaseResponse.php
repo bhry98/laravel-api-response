@@ -92,7 +92,7 @@ abstract class BaseResponse
      * Pull message from translations using given message as translation key.
      * If message is empty, fall back to default defined in child classes or config.
      */
-    public function localize(string $langKey = null): static
+    public function localize(?string $langKey = null): static
     {
         $key = $langKey ?: $this->message;
         $translated = __($key);
