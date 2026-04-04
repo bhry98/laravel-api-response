@@ -3,7 +3,7 @@
   "description": "laravel package for handle responses for api projects",
   "type": "library",
   "require": {
-    "laravel/framework": "12.*"
+    "laravel/framework": "11.*|12.*|13.*"
   },
   "license": "MIT",
   "autoload": {
