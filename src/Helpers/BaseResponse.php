@@ -66,7 +66,7 @@ abstract class BaseResponse
      */
     public function trace(Throwable $exception): static
     {
-        $shouldAllow = config('api-response.allow_trace', false) || config('app.debug', env('APP_DEBUG', false));
+        $shouldAllow = config('bhry98-api-response.allow_trace', false) || config('app.debug', env('APP_DEBUG', false));
 
         if (!$shouldAllow) {
             // do not include trace in production unless explicitly allowed
@@ -119,7 +119,7 @@ abstract class BaseResponse
 
     public function toArray(): array
     {
-        $keys = config('api-response.keys');
+        $keys = config('bhry98-api-response.keys');
 
         $payload = [
             $keys['status'] => $this->statusCode,
@@ -143,7 +143,7 @@ abstract class BaseResponse
             $payload['trace'] = $this->trace;
         }
 
-        if (config('api-response.wrap', false)) {
+        if (config('bhry98-api-response.wrap', false)) {
             return ['data' => $payload];
         }
 
@@ -152,7 +152,7 @@ abstract class BaseResponse
 
     public function toJson(int $options = 0): JsonResponse
     {
-        $configMessage = config('api-response.messages.' . $this->statusCode);
+        $configMessage = config('bhry98-api-response.messages.' . $this->statusCode);
 
         return response()->json([
             'status' => $this->statusCode,
