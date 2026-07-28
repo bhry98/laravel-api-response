@@ -4,6 +4,9 @@ namespace Bhry98\LaravelApiResponse\Responses;
 
 use Bhry98\LaravelApiResponse\Helpers\BaseResponse;
 
+/**
+ * @deprecated Use api()->notFound() instead.
+ */
 class NotFoundResponse extends BaseResponse
 {
     public function __construct()

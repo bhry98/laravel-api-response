@@ -1,137 +1,49 @@
-# Laravel API Response Package
+# Laravel API Response
 
-A fluent, extensible, and developer-friendly API response builder for Laravel applications.
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/bhry98/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/bhry98/laravel-api-response)
+[![Total Downloads](https://img.shields.io/packagist/dt/bhry98/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/bhry98/laravel-api-response)
+[![License](https://img.shields.io/packagist/l/bhry98/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/bhry98/laravel-api-response)
 
----
+A fluent, extensible, highly configurable API response toolkit for Laravel 11, 12 and 13. Zero configuration to get started, endlessly customizable when you need it.
 
-## 🚀 Features
+```php
+return api()->created($user);
 
-- ✨ **Fluent Interface** — Chain methods to build responses easily.
-- 🧩 **Response Types** — Supports `success`, `error`, `validation`, `not found`, and more.
-- ⚙️ **Customizable Messages** — Override defaults or localize them.
-- 🧱 **Macroable Support** — Extend response types dynamically.
-- 🧮 **Meta Data Support** — Add pagination or extra info with `meta()`.
-- 🌍 **Localization Ready** — Pull response messages from Laravel translations.
-- 🔍 **Trace Support** — Optionally include exception traces for debugging.
+return api()
+    ->success()
+    ->message('User created.')
+    ->data($user)
+    ->meta(['foo' => 'bar'])
+    ->headers(['X-Foo' => 'bar'])
+    ->send();
+```
 
----
+## 📖 Full documentation
 
-## 📦 Installation
+**[bhry98.github.io/packages/laravel-api-response](https://bhry98.github.io/packages/laravel-api-response/)**
+
+## Installation
 
 ```bash
 composer require bhry98/laravel-api-response
 ```
 
----
+The service provider and the `ApiResponse` facade alias are auto-discovered - nothing else is required.
 
-## ⚙️ Configuration
+## Highlights
 
-Publish the configuration file:
+- A single fluent builder (`api()` / `ApiResponse`) with ready-made HTTP and business response shortcuts.
+- Fully configurable envelope - renameable keys, optional wrapping, and swappable `default`/`minimal`/`mobile`/`jsonapi` presets.
+- Automatic data detection for models, collections, resources, paginators and DTOs.
+- Global metadata, hooks, events, macros and a template system for reusable responses.
+- Opt-in **rate limiting** middleware with a standard `api()->tooManyRequests()` envelope.
+- Opt-in **audit logging** of requests/responses to the database via a queued job, so logging never slows down a response.
+- Opt-in **locale resolution** middleware (`Accept-Language` header first, then a configurable user locale column).
+- Optional exception handler and `response()->json()` overrides, and testing assertion macros.
+- Fully backward compatible with the pre-2.0 `BResponseSuccess`/`BResponseError`/... API.
 
-```bash
-php artisan vendor:publish --provider="Bhry98\LaravelApiResponse\Providers\LaravelApiResponseServiceProvider" --tag=config
-```
+See the [full documentation](https://bhry98.github.io/packages/laravel-api-response/) for configuration, usage examples and every extension point.
 
-This will create `config/bhry98-api-response.php` where you can customize default messages:
+## License
 
-```php
-return [
-    'messages' => [
-        'success' => 'Operation successful',
-        'error' => 'An error occurred',
-        'validation' => 'Validation failed',
-        'not_found' => 'Resource not found',
-        'internal' => 'Internal server error',
-    ],
-];
-```
-
----
-
-## 🧠 Usage Example
-
-```php
-use Bhry98\LaravelApiResponse\Facades\BResponseSuccess;
-use Bhry98\LaravelApiResponse\Facades\BResponseError;
-
-Route::get('/{t}', function ($t) {
-    return match ($t) {
-        "success" => BResponseSuccess::make()
-                ->message('Everything is fine!')
-                ->data(['id' => 1])
-                ->additions(['request_id' => uniqid()])
-                ->toJson(),
-        default => BResponseError::make()
-                ->message('Something went wrong!')
-                ->trace(new \Exception('Example'))
-                ->toJson(),
-    };
-});
-```
-
----
-
-## 🧩 Example Response
-
-### ✅ Success
-```json
-{
-  "status": "success",
-  "message": "Everything is fine!",
-  "data": { "id": 1 },
-  "additions": { "request_id": "654adf..." },
-  "meta": []
-}
-```
-
-### ❌ Error
-```json
-{
-  "status": "error",
-  "message": "Something went wrong!",
-  "trace": "Exception stack trace (optional)",
-  "data": [],
-  "additions": [],
-  "meta": []
-}
-```
-
----
-
-## 🧱 Extend Response (Macroable)
-
-```php
-BResponseSuccess::macro('withTimestamp', function () {
-    return $this->additions(['timestamp' => now()]);
-});
-
-// Usage
-return BResponseSuccess::make()
-    ->withTimestamp()
-    ->toJson();
-```
-
----
-
-## 🧩 Available Methods
-
-| Method                     | Description                           |
-|----------------------------|---------------------------------------|
-| `make($options = [])`      | Initialize response                   |
-| `message($message)`        | Set response message                  |
-| `data($data)`              | Attach data payload                   |
-| `additions(array $extras)` | Add custom key/value pairs            |
-| `meta($info)`              | Add pagination/meta info              |
-| `trace($exception)`        | Include exception trace               |
-| `localize($key)`           | Use translation key for message       |
-| `toJson()`                 | Return `Illuminate\Http\JsonResponse` |
-
----
-
-## ⚖️ License
-
-This package is open-sourced software licensed under the [MIT license](https://opensource.org/license/MIT).
-
----
-
-Developed with ❤️ by **Bhry98**
+MIT.

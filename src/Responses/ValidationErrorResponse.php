@@ -6,6 +6,9 @@ use Bhry98\LaravelApiResponse\Helpers\BaseResponse;
 use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 
+/**
+ * @deprecated Use api()->unprocessable($errors) instead.
+ */
 class ValidationErrorResponse extends BaseResponse
 {
     public function __construct()
@@ -13,8 +16,6 @@ class ValidationErrorResponse extends BaseResponse
         $this->message = config('bhry98-api-response.messages.validation', 'Validation failed');
         $this->statusCode = 422;
     }
-
-
 
     public function fromValidator($validator): static
     {

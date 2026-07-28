@@ -1,0 +1,30 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - src
+
+    level: 5
+
+    tmpDir: build/phpstan
+
+    ignoreErrors:
+        -
+            # Larastan's env()-outside-config-dir check only recognizes the
+            # consuming app's own config/ directory; this *is* a bona fide
+            # Laravel config file, just shipped from inside the package.
+            identifier: larastan.noEnvCallsOutsideOfConfig
+            path: src/config/bhry98-api-response.php
+        -
+            # Deprecated BC factory method (Helpers/BaseResponse::make()).
+            # `new static()` is safe here: every subclass shares the same
+            # parameterless constructor contract.
+            identifier: new.static
+            path: src/Helpers/BaseResponse.php
+        -
+            # Macroable::__call() rebinds $this to the ResponseBuilder
+            # instance via Closure::bindTo() at call time; the @var in this
+            # macro closure documents that runtime type intentionally.
+            identifier: varTag.nativeType
+            path: src/Providers/BResponseServiceProvider.php

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static ValidationErrorResponse make(array $options = [])
+ *
+ * @deprecated Use the ApiResponse facade / api() helper instead.
  */
 class BResponseValidationError extends Facade
 {

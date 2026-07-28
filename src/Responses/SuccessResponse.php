@@ -4,6 +4,9 @@ namespace Bhry98\LaravelApiResponse\Responses;
 
 use Bhry98\LaravelApiResponse\Helpers\BaseResponse;
 
+/**
+ * @deprecated Use api()->success() / api()->ok() instead.
+ */
 class SuccessResponse extends BaseResponse
 {
     public function __construct()

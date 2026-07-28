@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static NotFoundResponse make(array $options = [])
+ *
+ * @deprecated Use the ApiResponse facade / api() helper instead.
  */
 class BResponseNotFound extends Facade
 {
