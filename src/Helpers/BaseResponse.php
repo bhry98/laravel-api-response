@@ -112,8 +112,9 @@ abstract class BaseResponse
         $key = $langKey ?: $this->message;
         $translated = __($key);
 
-        // if translation found and not equal to the key, use it
-        if (! empty($translated) && $translated !== $key) {
+        // if translation found and not equal to the key, use it (a key that
+        // points at a whole translation group returns an array - ignore it)
+        if (is_string($translated) && $translated !== '' && $translated !== $key) {
             $this->message = $translated;
         }
 
@@ -181,7 +182,9 @@ abstract class BaseResponse
      */
     public function toJson(int $options = 0): JsonResponse
     {
-        return response()->json($this->toArray(), $this->statusCode, [], $options);
+        // Not response()->json(): toArray() is already a full envelope, and the
+        // optional response()->json() override would wrap it a second time.
+        return new JsonResponse($this->toArray(), $this->statusCode, [], $options);
     }
 
     /** alias for toJson() to keep your suggested naming */

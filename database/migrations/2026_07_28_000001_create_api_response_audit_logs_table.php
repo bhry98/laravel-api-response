@@ -18,7 +18,8 @@ return new class extends Migration
                 $table->string('route_name')->nullable();
                 $table->string('ip_address', 45)->nullable();
                 $table->string('user_agent')->nullable();
-                $table->unsignedBigInteger('user_id')->nullable();
+                // string, so integer, UUID and ULID user keys all fit.
+                $table->string('user_id', 64)->nullable();
                 $table->string('user_type')->nullable();
                 $table->json('request_headers')->nullable();
                 $table->json('request_body')->nullable();

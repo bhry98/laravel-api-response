@@ -118,6 +118,11 @@ class ResolveLocale
             }
 
             $quality = isset($segments[1]) ? (float) $segments[1] : 1.0;
+
+            if ($quality <= 0) {
+                continue; // q=0 means "not acceptable" (RFC 9110).
+            }
+
             $tags[] = ['tag' => strtolower(explode('-', $tag)[0]), 'q' => $quality];
         }
 

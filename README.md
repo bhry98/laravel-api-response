@@ -1,10 +1,23 @@
+<p align="center">
+  <a href="https://bhry98.github.io/packages/laravel-api-response/">
+    <img src="https://raw.githubusercontent.com/bhry98/laravel-api-response/main/art/banner.svg" alt="Laravel API Response: one fluent builder for every JSON response your API sends" width="100%">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://packagist.org/packages/bhry98/laravel-api-response"><img src="https://img.shields.io/packagist/v/bhry98/laravel-api-response.svg?style=flat-square" alt="Latest Version on Packagist"></a>
+  <a href="https://github.com/bhry98/laravel-api-response/actions/workflows/tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/bhry98/laravel-api-response/tests.yml?branch=main&label=tests&style=flat-square" alt="Tests"></a>
+  <a href="https://packagist.org/packages/bhry98/laravel-api-response"><img src="https://img.shields.io/packagist/dt/bhry98/laravel-api-response.svg?style=flat-square" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/bhry98/laravel-api-response"><img src="https://img.shields.io/packagist/l/bhry98/laravel-api-response.svg?style=flat-square" alt="License"></a>
+</p>
+
 # Laravel API Response
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/bhry98/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/bhry98/laravel-api-response)
-[![Total Downloads](https://img.shields.io/packagist/dt/bhry98/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/bhry98/laravel-api-response)
-[![License](https://img.shields.io/packagist/l/bhry98/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/bhry98/laravel-api-response)
+A fluent, extensible API response toolkit for **Laravel 11, 12, 13 and 14**. Every response your API sends (success, error, validation, pagination, resources) comes out in the same configurable JSON envelope. It works with zero configuration, and you can customize it as far as you need.
 
-A fluent, extensible, highly configurable API response toolkit for Laravel 11, 12 and 13. Zero configuration to get started, endlessly customizable when you need it.
+```bash
+composer require bhry98/laravel-api-response
+```
 
 ```php
 return api()->created($user);
@@ -13,37 +26,27 @@ return api()
     ->success()
     ->message('User created.')
     ->data($user)
-    ->meta(['foo' => 'bar'])
-    ->headers(['X-Foo' => 'bar'])
+    ->meta(['version' => 'v1'])
     ->send();
 ```
 
-## 📖 Full documentation
-
-**[bhry98.github.io/packages/laravel-api-response](https://bhry98.github.io/packages/laravel-api-response/)**
-
-## Installation
-
-```bash
-composer require bhry98/laravel-api-response
+```json
+{
+    "status": true,
+    "message": "User created.",
+    "data": { "id": 1, "name": "Jane" },
+    "meta": { "version": "v1" }
+}
 ```
 
-The service provider and the `ApiResponse` facade alias are auto-discovered - nothing else is required.
+**Highlights:** ready-made HTTP and business shortcuts, automatic handling of models/resources/paginators, renameable keys and swappable presets (`default`, `minimal`, `mobile`, `jsonapi`), opt-in exception rendering, rate limiting, audit logging and locale resolution, plus hooks, events, macros and testing assertions.
 
-## Highlights
+## 📖 Documentation
 
-- A single fluent builder (`api()` / `ApiResponse`) with ready-made HTTP and business response shortcuts.
-- Fully configurable envelope - renameable keys, optional wrapping, and swappable `default`/`minimal`/`mobile`/`jsonapi` presets.
-- Automatic data detection for models, collections, resources, paginators and DTOs.
-- Global metadata, hooks, events, macros and a template system for reusable responses.
-- Opt-in **rate limiting** middleware with a standard `api()->tooManyRequests()` envelope.
-- Opt-in **audit logging** of requests/responses to the database via a queued job, so logging never slows down a response.
-- Opt-in **locale resolution** middleware (`Accept-Language` header first, then a configurable user locale column).
-- Optional exception handler and `response()->json()` overrides, and testing assertion macros.
-- Fully backward compatible with the pre-2.0 `BResponseSuccess`/`BResponseError`/... API.
+**Read the full documentation at [bhry98.github.io/packages/laravel-api-response](https://bhry98.github.io/packages/laravel-api-response/)**. It covers installation, every response helper, configuration, and every extension point.
 
-See the [full documentation](https://bhry98.github.io/packages/laravel-api-response/) for configuration, usage examples and every extension point.
+For more packages, visit **[bhry98.github.io/packages](https://bhry98.github.io/packages/)**.
 
 ## License
 
-MIT.
+MIT. See [LICENSE](LICENSE).

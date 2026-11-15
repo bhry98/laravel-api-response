@@ -1,78 +1,75 @@
 {
-  "name": "bhry98/laravel-api-response",
-  "description": "A fluent, extensible, and highly configurable API response toolkit for Laravel applications.",
-  "keywords": [
-    "laravel",
-    "api",
-    "response",
-    "json",
-    "rest",
-    "api-response"
-  ],
-  "type": "library",
-  "license": "MIT",
-  "homepage": "https://github.com/bhry98/laravel-api-response",
-  "support": {
-    "issues": "https://github.com/bhry98/laravel-api-response/issues",
-    "source": "https://github.com/bhry98/laravel-api-response"
-  },
-  "authors": [
-    {
-      "name": "Bhr Abdelrahman",
-      "email": "bhrabdelrahman8@gmail.com"
-    }
-  ],
-  "require": {
-    "php": "^8.2",
-    "illuminate/support": "^11.0|^12.0|^13.0",
-    "illuminate/http": "^11.0|^12.0|^13.0",
-    "illuminate/pipeline": "^11.0|^12.0|^13.0",
-    "illuminate/contracts": "^11.0|^12.0|^13.0"
-  },
-  "require-dev": {
-    "laravel/framework": "^11.0|^12.0|^13.0",
-    "orchestra/testbench": "^9.0|^10.0|^11.0",
-    "pestphp/pest": "^2.34|^3.0",
-    "pestphp/pest-plugin-laravel": "^2.4|^3.0",
-    "larastan/larastan": "^2.9|^3.0",
-    "laravel/pint": "^1.17"
-  },
-  "autoload": {
-    "psr-4": {
-      "Bhry98\\LaravelApiResponse\\": "src/"
+    "name": "bhry98/laravel-api-response",
+    "description": "A fluent, extensible, and highly configurable API response toolkit for Laravel 11, 12, 13 and 14.",
+    "keywords": [
+        "laravel",
+        "api",
+        "response",
+        "json",
+        "rest",
+        "api-response",
+        "json-api",
+        "laravel-package"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://bhry98.github.io/packages/laravel-api-response/",
+    "support": {
+        "docs": "https://bhry98.github.io/packages/laravel-api-response/",
+        "issues": "https://github.com/bhry98/laravel-api-response/issues",
+        "source": "https://github.com/bhry98/laravel-api-response"
     },
-    "files": [
-      "src/helpers.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Bhry98\\LaravelApiResponse\\Tests\\": "tests/"
-    }
-  },
-  "scripts": {
-    "test": "pest",
-    "test-coverage": "pest --coverage",
-    "analyse": "phpstan analyse",
-    "format": "pint"
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Bhry98\\LaravelApiResponse\\Providers\\BResponseServiceProvider"
-      ],
-      "aliases": {
-        "ApiResponse": "Bhry98\\LaravelApiResponse\\Facades\\ApiResponse"
-      }
+    "authors": [
+        {
+            "name": "Bhr Abdelrahman",
+            "email": "bhrabdelrahman8@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0|^12.0|^13.0|^14.0"
     },
-    "minimum-stability": "stable"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true
+    "require-dev": {
+        "larastan/larastan": "^2.9|^3.0",
+        "laravel/pint": "^1.17",
+        "orchestra/testbench": "^9.0|^10.0|^11.0|^12.0",
+        "pestphp/pest": "^2.34|^3.0|^4.0|^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bhry98\\LaravelApiResponse\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bhry98\\LaravelApiResponse\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "test-coverage": "pest --coverage",
+        "analyse": "phpstan analyse --memory-limit=1G",
+        "format": "pint"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bhry98\\LaravelApiResponse\\Providers\\BResponseServiceProvider"
+            ],
+            "aliases": {
+                "ApiResponse": "Bhry98\\LaravelApiResponse\\Facades\\ApiResponse"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
-  }
 }

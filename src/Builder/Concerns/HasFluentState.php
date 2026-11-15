@@ -133,7 +133,8 @@ trait HasFluentState
         $key = $langKey ?? $this->payload->message;
         $translated = __($key);
 
-        if ($translated !== $key) {
+        // A key pointing at a whole translation group returns an array.
+        if (is_string($translated) && $translated !== $key) {
             $this->payload->message = $translated;
         }
 

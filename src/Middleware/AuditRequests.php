@@ -8,6 +8,8 @@ use Bhry98\LaravelApiResponse\Jobs\StoreAuditLogEntry;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -44,7 +46,7 @@ class AuditRequests
     {
         $methods = $config['methods'] ?? [];
 
-        if ($methods !== [] && ! in_array($request->method(), $methods, true)) {
+        if ($methods !== [] && ! in_array($request->method(), array_map('strtoupper', $methods), true)) {
             return false;
         }
 
@@ -73,11 +75,12 @@ class AuditRequests
             'url' => $request->fullUrl(),
             'route_name' => $request->route()?->getName(),
             'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
+            // The column is a VARCHAR(255); some clients send far longer agents.
+            'user_agent' => $request->userAgent() !== null ? Str::limit($request->userAgent(), 252) : null,
             'user_id' => $user?->getAuthIdentifier(),
             'user_type' => $user ? $user::class : null,
             'request_headers' => ($capture['headers'] ?? false) ? $this->redact($request->headers->all(), $hidden) : null,
-            'request_body' => ($capture['request_body'] ?? true) ? $this->redact($request->except([]), $hidden) : null,
+            'request_body' => ($capture['request_body'] ?? true) ? $this->redact($this->describeFiles($request->all()), $hidden) : null,
             'response_status' => $response->getStatusCode(),
             'response_body' => ($capture['response_body'] ?? true) ? $this->redact($this->decodeResponse($response), $hidden) : null,
             'duration_ms' => $durationMs,
@@ -111,6 +114,32 @@ class AuditRequests
     }
 
     /**
+     * Replaces UploadedFile instances with a plain description: they cannot
+     * be serialized into the queued job, and their contents never belong in
+     * an audit log anyway.
+     */
+    private function describeFiles(mixed $data): mixed
+    {
+        if ($data instanceof UploadedFile) {
+            return [
+                'file' => $data->getClientOriginalName(),
+                'size' => $data->getSize(),
+                'mime' => $data->getClientMimeType(),
+            ];
+        }
+
+        if (is_array($data)) {
+            return array_map(fn (mixed $value) => $this->describeFiles($value), $data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Redacts every key listed in "hidden" (case-insensitively), at any
+     * depth - including keys whose value is itself an array, such as
+     * request headers (["authorization" => ["Bearer ..."]]).
+     *
      * @param  array<int, string>  $hidden
      */
     private function redact(mixed $data, array $hidden): mixed
@@ -121,11 +150,13 @@ class AuditRequests
 
         $needles = array_map('strtolower', $hidden);
 
-        array_walk_recursive($data, function (&$value, $key) use ($needles): void {
+        foreach ($data as $key => $value) {
             if (in_array(strtolower((string) $key), $needles, true)) {
-                $value = '***';
+                $data[$key] = '***';
+            } elseif (is_array($value)) {
+                $data[$key] = $this->redact($value, $hidden);
             }
-        });
+        }
 
         return $data;
     }

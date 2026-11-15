@@ -46,13 +46,15 @@ trait BuildsResponse
     {
         $noBody = in_array($this->payload->statusCode, [204, 304], true);
 
-        $response = $noBody
-            ? $this->responseFactory->json(null, $this->payload->statusCode)
-            : $this->responseFactory->json($this->build(), $this->payload->statusCode);
+        // Built directly rather than through response()->json(): the body is
+        // already a finished envelope, and going through the (optionally
+        // overridden) ResponseFactory would wrap it a second time whenever
+        // `override_default_response` is enabled.
+        $response = new JsonResponse($noBody ? null : $this->build(), $this->payload->statusCode);
 
         if ($noBody) {
-            // HTTP forbids a body on 204/304; JsonResponse::json(null, ...)
-            // still encodes the literal string "null" otherwise.
+            // HTTP forbids a body on 204/304; JsonResponse(null) still
+            // encodes the literal string "{}" otherwise.
             $response->setContent('');
         }
 

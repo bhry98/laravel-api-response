@@ -20,7 +20,9 @@ class ApplyDebugStage implements PipelineStageContract
     public function handle(ResponsePayload $payload, Closure $next): mixed
     {
         if ($this->config->get('bhry98-api-response.debug.enabled') && $this->config->get('app.debug')) {
-            $payload->debug = $this->collector->collect();
+            // Merge rather than overwrite, so details attached explicitly via
+            // ->trace($exception) survive the global debug block.
+            $payload->debug = [...$this->collector->collect(), ...($payload->debug ?? [])];
         }
 
         return $next($payload);

@@ -113,7 +113,7 @@ class BResponseServiceProvider extends ServiceProvider
 
     private function registerExceptionRenderer(): void
     {
-        $this->app->afterResolving(ExceptionHandler::class, function ($handler): void {
+        $register = function ($handler): void {
             if (! method_exists($handler, 'renderable')) {
                 return;
             }
@@ -127,6 +127,16 @@ class BResponseServiceProvider extends ServiceProvider
 
                 return $renderer->render($this->app->make(ResponseBuilder::class), $e);
             });
-        });
+        };
+
+        // afterResolving() never fires for a singleton that was already
+        // resolved before this provider booted, so cover that case too.
+        if ($this->app->resolved(ExceptionHandler::class)) {
+            $register($this->app->make(ExceptionHandler::class));
+
+            return;
+        }
+
+        $this->app->afterResolving(ExceptionHandler::class, $register);
     }
 }
